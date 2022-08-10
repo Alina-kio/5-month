@@ -41,7 +41,7 @@ class MovieReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = 'text reviews rating'.split()
+        fields = 'title reviews rating'.split()
 
 
 

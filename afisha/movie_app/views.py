@@ -15,7 +15,16 @@ from .serializers import (
     MovieValidateSerializer,
     ReviewValidateSerializer
 )
-    
+# from rest_framework.generics import (
+#     ListAPIView,
+#     ListCreateAPIView,
+#     RetrieveUpdateDestroyAPIView
+# )
+
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
+
+
 
 @api_view(['GET', 'POST'])
 def directors_views(request):
@@ -34,6 +43,12 @@ def directors_views(request):
         )
         serializer.save()
     return Response(data=request.data)
+
+class DirectorAPIViewSet(ModelViewSet):
+    """Category API"""
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    pagination_class = PageNumberPagination
 
 
 @api_view(['GET', 'POST'])
@@ -59,6 +74,12 @@ def movies_views(request):
     return Response(data=MovieSerializer(movie).data)
 
 
+class MovieAPIViewSet(ModelViewSet):
+    """Category API"""
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    pagination_class = PageNumberPagination
+
 @api_view(['GET', "POST"])
 def reviews_views(request):
     if request.method == 'GET':
@@ -79,12 +100,23 @@ def reviews_views(request):
         )
     return Response(data=request.data)
 
+class ReviewAPIViewSet(ModelViewSet):
+    """Category API"""
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    pagination_class = PageNumberPagination
 
 @api_view(['GET'])
 def movie_reviews(request):
     movies = Movie.objects.all()
     data = MovieReviewSerializer(movies, many=True).data
     return Response(data=request.data)
+
+class MovieReviewAPIViewSet(ModelViewSet):
+    """Category API"""
+    queryset = Movie.objects.all()
+    serializer_class = MovieReviewSerializer
+    pagination_class = PageNumberPagination
 
 
 @api_view(['GET', 'PUT', 'DELETE'])

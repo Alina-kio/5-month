@@ -17,16 +17,33 @@ from django.contrib import admin
 from django.urls import path
 from movie_app import views
 from profile_app import views as user_views
+from . import swagger
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/directors/', views.directors_views),
-    path('api/v1/movies/', views.movies_views),
-    path('api/v1/reviews/', views.reviews_views),
-    path('api/v1/directors/<int:id>/', views.director_item_views),
-    path('api/v1/movies/<int:id>/', views.movie_item_views),
-    path('api/v1/reviews/<int:id>/', views.review_item_views),
-    path('api/v1/movies/reviews/', views.movie_reviews),
-    path('api/v1/authorization/', user_views.authorization),
-    path('api/v1/registration/', user_views.registration),
+    path('api/v1/directors/', views.DirectorAPIViewSet.as_view({
+        'get': 'list', 'post': 'create'
+    })),
+    path('api/v1/movies/', views.MovieAPIViewSet.as_view({
+        'get': 'list', 'post': 'create'
+    })),
+    path('api/v1/reviews/', views.ReviewAPIViewSet.as_view({
+        'get': 'list', 'post': 'create'
+    })),
+    path('api/v1/directors/<int:pk>/', views.DirectorAPIViewSet.as_view({
+        'get': 'retrieve', 'put': 'update', 'delete': 'destroy'
+    })),
+    path('api/v1/movies/<int:pk>/', views.MovieAPIViewSet.as_view({
+        'get': 'retrieve', 'put': 'update', 'delete': 'destroy'
+    })),
+    path('api/v1/reviews/<int:pk>/', views.ReviewAPIViewSet.as_view({
+        'get': 'retrieve', 'put': 'update', 'delete': 'destroy'
+    })),
+    path('api/v1/movies/reviews/', views.MovieReviewAPIViewSet.as_view({
+        'get': 'list'
+    })),
+    path('api/v1/authorization/', user_views.AuthorizationAPIView.as_view()),
+    path('api/v1/registration/', user_views.RegistrationAPIView.as_view()),
 ]
+
+urlpatterns += swagger.urlpatterns
